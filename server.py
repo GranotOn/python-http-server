@@ -2,6 +2,7 @@ import http.server
 import socketserver
 import urllib.parse as urlparse
 import pprint
+import json
 
 Handler = http.server.SimpleHTTPRequestHandler
 
@@ -23,6 +24,11 @@ class HttpHandler(Handler):
             request["headers"][name] = value
         
         pprint.pprint(request)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(bytes(json.dumps(request), 'utf-8'))
+        return
 
 
 def main():
